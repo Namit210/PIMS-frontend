@@ -2,6 +2,11 @@ import React from "react"
 import { AiFillBank, AiOutlineEdit } from "react-icons/ai"
 import { RxCrossCircled } from "react-icons/rx"
 
+import upiLogo from "../assets/upi.png"
+import paytmLogo from "../assets/paytm.png"
+import paypalLogo from "../assets/paypal.png"
+import usdtLogo from "../assets/usdt.png"
+
 export default function PayCard({ type, input, onEdit, onDelete }) {
   let name, img, altText;
   const imgStyle = {
@@ -14,7 +19,7 @@ export default function PayCard({ type, input, onEdit, onDelete }) {
     case "UPI":
       name = "UPI"
       altText = "UPI"
-      img = <img src="src/assets/upi.png" alt={altText} style={imgStyle} />
+      img = <img src={upiLogo} alt={altText} style={imgStyle} />
       break
     case "Paytm":
       name = (
@@ -24,7 +29,7 @@ export default function PayCard({ type, input, onEdit, onDelete }) {
         </span>
       )
       altText = "Paytm"
-      img = <img src="src/assets/paytm.png" alt={altText} style={imgStyle} />
+      img = <img src={paytmLogo} alt={altText} style={imgStyle} />
       break
     case "PayPal":
     case "Paypal":
@@ -35,13 +40,13 @@ export default function PayCard({ type, input, onEdit, onDelete }) {
         </span>
       )
       altText = "PayPal"
-      img = <img src="src/assets/paypal.png" alt={altText} style={imgStyle} />
+      img = <img src={paypalLogo} alt={altText} style={imgStyle} />
       break
     case "USDT":
     case "BNB USDT":
       name = "BNB USDT"
       altText = "BNB USDT"
-      img = <img src="src/assets/usdt.png" alt={altText} style={imgStyle} />
+      img = <img src={usdtLogo} alt={altText} style={imgStyle} />
       break
     case "Bank":
       name = "Bank"

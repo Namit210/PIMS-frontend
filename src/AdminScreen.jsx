@@ -13,6 +13,11 @@ import {
   AiOutlineUp 
 } from "react-icons/ai"
 
+import upiLogo from "./assets/upi.png"
+import paytmLogo from "./assets/paytm.png"
+import paypalLogo from "./assets/paypal.png"
+import usdtLogo from "./assets/usdt.png"
+
 export default function AdminScreen({ token, user, onLogout }) {
   // ==========================================
   // 1. STATE DEFINITIONS
@@ -110,7 +115,7 @@ export default function AdminScreen({ token, user, onLogout }) {
       case "UPI":
         return {
           name: "UPI",
-          img: <img src="src/assets/upi.png" alt="UPI" style={imgStyle} />
+          img: <img src={upiLogo} alt="UPI" style={imgStyle} />
         };
       case "Paytm":
         return {
@@ -120,7 +125,7 @@ export default function AdminScreen({ token, user, onLogout }) {
               <span style={{ color: "#00b9f5" }}>tm</span>
             </span>
           ),
-          img: <img src="src/assets/paytm.png" alt="Paytm" style={imgStyle} />
+          img: <img src={paytmLogo} alt="Paytm" style={imgStyle} />
         };
       case "PayPal":
         return {
@@ -130,12 +135,12 @@ export default function AdminScreen({ token, user, onLogout }) {
               <span style={{ color: "#0079c1" }}>Pal</span>
             </span>
           ),
-          img: <img src="src/assets/paypal.png" alt="PayPal" style={imgStyle} />
+          img: <img src={paypalLogo} alt="PayPal" style={imgStyle} />
         };
       case "USDT":
         return {
           name: "BNB USDT",
-          img: <img src="src/assets/usdt.png" alt="USDT" style={imgStyle} />
+          img: <img src={usdtLogo} alt="USDT" style={imgStyle} />
         };
       case "Bank":
         return {

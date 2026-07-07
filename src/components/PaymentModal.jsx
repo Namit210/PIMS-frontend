@@ -11,6 +11,11 @@ import {
   AiOutlinePhone
 } from "react-icons/ai"
 
+import upiLogo from "../assets/upi.png"
+import paytmLogo from "../assets/paytm.png"
+import paypalLogo from "../assets/paypal.png"
+import usdtLogo from "../assets/usdt.png"
+
 export default function PaymentModal({ isOpen, onClose, option, onSubmit, initialValues }) {
   // ==========================================
   // 1. STATE & REF DEFINITIONS
@@ -95,21 +100,21 @@ export default function PaymentModal({ isOpen, onClose, option, onSubmit, initia
       case "BNB USDT":
         return {
           title: "BNB USDT Address",
-          icon: <img src="src/assets/usdt.png" alt="USDT" style={{ width: "24px", height: "24px" }} />,
+          icon: <img src={usdtLogo} alt="USDT" style={{ width: "24px", height: "24px" }} />,
           primaryPlaceholder: "Enter BNB USDT Address",
-          primaryIcon: <img src="src/assets/usdt.png" alt="USDT" style={{ width: "18px", height: "18px" }} />
+          primaryIcon: <img src={usdtLogo} alt="USDT" style={{ width: "18px", height: "18px" }} />
         }
       case "UPI":
         return {
           title: "UPI ID",
-          icon: <img src="src/assets/upi.png" alt="UPI" style={{ width: "24px", height: "24px" }} />,
+          icon: <img src={upiLogo} alt="UPI" style={{ width: "24px", height: "24px" }} />,
           primaryPlaceholder: "Enter UPI ID",
-          primaryIcon: <img src="src/assets/upi.png" alt="UPI" style={{ width: "18px", height: "18px" }} />
+          primaryIcon: <img src={upiLogo} alt="UPI" style={{ width: "18px", height: "18px" }} />
         }
       case "Paytm":
         return {
           title: "Paytm Number",
-          icon: <img src="src/assets/paytm.png" alt="Paytm" style={{ width: "24px", height: "24px" }} />,
+          icon: <img src={paytmLogo} alt="Paytm" style={{ width: "24px", height: "24px" }} />,
           primaryPlaceholder: "Enter Paytm Number",
           primaryIcon: <AiOutlinePhone />
         }
@@ -117,7 +122,7 @@ export default function PaymentModal({ isOpen, onClose, option, onSubmit, initia
       case "Paypal":
         return {
           title: "PayPal Email",
-          icon: <img src="src/assets/paypal.png" alt="PayPal" style={{ width: "24px", height: "24px" }} />,
+          icon: <img src={paypalLogo} alt="PayPal" style={{ width: "24px", height: "24px" }} />,
           primaryPlaceholder: "Enter PayPal Email Address",
           primaryIcon: <AiOutlineMail />
         }

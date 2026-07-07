@@ -5,7 +5,10 @@ import PayCard from "./components/PayCard"
 import PaymentModal from "./components/PaymentModal"
 import { AiFillBank, AiOutlineBell, AiFillStar } from "react-icons/ai"
 
-
+import upiLogo from "./assets/upi.png"
+import paytmLogo from "./assets/paytm.png"
+import paypalLogo from "./assets/paypal.png"
+import usdtLogo from "./assets/usdt.png"
 
 export default function Screen({ token, user, onLogout }) {
   // ==========================================
@@ -347,17 +350,17 @@ export default function Screen({ token, user, onLogout }) {
             onClick={() => handleOptionClick("Bank")} 
           />
           <Option 
-            img="src/assets/usdt.png" 
+            img={usdtLogo} 
             name="BNB USDT" 
             onClick={() => handleOptionClick("USDT")} 
           />
           <Option 
-            img="src/assets/upi.png" 
+            img={upiLogo} 
             name="UPI" 
             onClick={() => handleOptionClick("UPI")} 
           />
           <Option 
-            img="src/assets/paytm.png" 
+            img={paytmLogo} 
             name={
               <span style={{ fontWeight: "700" }}>
                 <span style={{ color: "#002970" }}>Pay</span>
@@ -367,7 +370,7 @@ export default function Screen({ token, user, onLogout }) {
             onClick={() => handleOptionClick("Paytm")} 
           />
           <Option 
-            img="src/assets/paypal.png" 
+            img={paypalLogo} 
             name={
               <span style={{ fontStyle: "italic", fontWeight: "700" }}>
                 <span style={{ color: "#3b148c" }}>Pay</span>

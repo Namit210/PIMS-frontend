@@ -7,6 +7,8 @@ export default function Auth({ onAuthSuccess }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminSecret, setAdminSecret] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -15,7 +17,7 @@ export default function Auth({ onAuthSuccess }) {
     setError('');
     setLoading(true);
 
-    if (!email || !password || (!isLogin && !username)) {
+    if (!email || !password || (!isLogin && !username) || (!isLogin && isAdmin && !adminSecret)) {
       setError('Please fill in all fields');
       setLoading(false);
       return;
@@ -24,7 +26,13 @@ export default function Auth({ onAuthSuccess }) {
     const endpoint = isLogin ? '/users/login' : '/users/signup';
     const payload = isLogin 
       ? { email, password } 
-      : { name: username, email, password };
+      : { 
+          name: username, 
+          email, 
+          password, 
+          role: isAdmin ? 'admin' : 'user',
+          adminSecret: isAdmin ? adminSecret : undefined 
+        };
 
     try {
       const response = await fetch(`${API_URL}${endpoint}`, {
@@ -138,6 +146,46 @@ export default function Auth({ onAuthSuccess }) {
             </div>
           </div>
 
+          {!isLogin && (
+            <div className="form-group" style={{ flexDirection: "row", alignItems: "center", gap: "8px", margin: "4px 0" }}>
+              <input
+                id="isAdmin"
+                type="checkbox"
+                checked={isAdmin}
+                onChange={(e) => {
+                  setIsAdmin(e.target.checked);
+                  if(!e.target.checked) setAdminSecret('');
+                }}
+                style={{ width: "18px", height: "18px", cursor: "pointer" }}
+              />
+              <label htmlFor="isAdmin" style={{ cursor: "pointer", fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>
+                Register as Admin
+              </label>
+            </div>
+          )}
+
+          {!isLogin && isAdmin && (
+            <div className="form-group" style={{ marginTop: "4px" }}>
+              <label htmlFor="adminSecret">Admin Secret Key</label>
+              <div className="input-wrapper">
+                <span className="input-icon">
+                  <svg style={{ width: '18px', height: '18px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                  </svg>
+                </span>
+                <input
+                  id="adminSecret"
+                  type="password"
+                  name="adminSecret"
+                  placeholder="Enter Admin Secret Key"
+                  value={adminSecret}
+                  onChange={(e) => setAdminSecret(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+          )}
+
           <button className="auth-btn" type="submit" disabled={loading}>
             {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Sign Up'}
           </button>
@@ -147,6 +195,8 @@ export default function Auth({ onAuthSuccess }) {
           {isLogin ? "Don't have an account?" : "Already have an account?"}
           <span onClick={() => {
             setIsLogin(!isLogin);
+            setIsAdmin(false);
+            setAdminSecret('');
             setError('');
           }}>
             {isLogin ? 'Sign Up' : 'Sign In'}

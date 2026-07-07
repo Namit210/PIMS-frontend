@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import Auth from './components/Auth'
 import Screen from './Screen'
+import AdminScreen from './AdminScreen'
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
@@ -38,7 +39,12 @@ export default function App() {
     return <Auth onAuthSuccess={handleAuthSuccess} />
   }
 
-  // Once authenticated, render main payments manager panel
+  // Route based on User Role (Admin Panel vs Client Panel)
+  if (user && user.role === 'admin') {
+    return <AdminScreen token={token} user={user} onLogout={handleLogout} />
+  }
+
+  // Once authenticated as standard user, render main payments manager panel
   return (
     <>
       <Screen token={token} user={user} onLogout={handleLogout} />

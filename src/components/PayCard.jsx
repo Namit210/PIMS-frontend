@@ -3,7 +3,7 @@ import { AiFillBank, AiOutlineEdit } from "react-icons/ai"
 import { RxCrossCircled } from "react-icons/rx"
 
 export default function PayCard({ type, input, onEdit, onDelete }) {
-  let name, img;
+  let name, img, altText;
   const imgStyle = {
     width: "30px",
     height: "30px",
@@ -13,28 +13,44 @@ export default function PayCard({ type, input, onEdit, onDelete }) {
   switch (type) {
     case "UPI":
       name = "UPI"
-      img = <img src="src/assets/upi.png" alt={name} style={imgStyle} />
+      altText = "UPI"
+      img = <img src="src/assets/upi.png" alt={altText} style={imgStyle} />
       break
     case "Paytm":
-      name = "Paytm"
-      img = <img src="src/assets/paytm.png" alt={name} style={imgStyle} />
+      name = (
+        <span style={{ fontWeight: "700" }}>
+          <span style={{ color: "#002970" }}>Pay</span>
+          <span style={{ color: "#00b9f5" }}>tm</span>
+        </span>
+      )
+      altText = "Paytm"
+      img = <img src="src/assets/paytm.png" alt={altText} style={imgStyle} />
       break
     case "PayPal":
     case "Paypal":
-      name = "PayPal"
-      img = <img src="src/assets/paypal.png" alt={name} style={imgStyle} />
+      name = (
+        <span style={{ fontStyle: "italic", fontWeight: "700" }}>
+          <span style={{ color: "#3b148c" }}>Pay</span>
+          <span style={{ color: "#0079c1" }}>Pal</span>
+        </span>
+      )
+      altText = "PayPal"
+      img = <img src="src/assets/paypal.png" alt={altText} style={imgStyle} />
       break
     case "USDT":
     case "BNB USDT":
       name = "BNB USDT"
-      img = <img src="src/assets/usdt.png" alt={name} style={imgStyle} />
+      altText = "BNB USDT"
+      img = <img src="src/assets/usdt.png" alt={altText} style={imgStyle} />
       break
     case "Bank":
       name = "Bank"
+      altText = "Bank"
       img = <AiFillBank style={{ fontSize: "23px", color: "#aabd03" }} />
       break
     default:
       name = type || "UPI"
+      altText = type || "UPI"
       img = <AiFillBank style={{ fontSize: "23px", color: "#aabd03" }} />
   }
 
@@ -82,11 +98,16 @@ export default function PayCard({ type, input, onEdit, onDelete }) {
               color: "#6e6b7b"
             }}
           >
-            {/* Display Bank Account Number or primary detail */}
             <div style={{ fontWeight: "600", color: "#1e1b24", marginBottom: "4px" }}>
-              {input[1]}
+              {type === "Bank" && input[1] ? (() => {
+                const acc = String(input[1]);
+                if (acc.length > 6) {
+                  return acc.substring(0, 2) + "*".repeat(acc.length - 6) + acc.substring(acc.length - 4);
+                }
+                return acc;
+              })() : input[1]}
             </div>
-            <div>
+            <div style={{textAlign: "left", color: "#080808"}}>
               {input[0]}
             </div>
           </div>
@@ -102,19 +123,19 @@ export default function PayCard({ type, input, onEdit, onDelete }) {
         >
           <button
             style={{
-              backgroundColor: "#ebece3",
-              color: "#361c1c",
+              backgroundColor: "#1865e9",
+              color: "#ffffff",
               border: "none",
               borderRadius: "6px",
               padding: "4px 8px",
-              fontSize: "11px",
-              fontWeight: "600"
+              fontSize: "15px",
+              fontWeight: "500"
             }}
           >
-            {name}
+            {altText}
           </button>
           {input[2] && (
-            <div style={{ marginTop: "8px", fontSize: "12px", color: "#b4b2bd", fontWeight: "500" }}>
+            <div style={{ marginTop: "8px", fontSize: "12px",  fontWeight: "500" }}>
               IFSC: {input[2]}
             </div>
           )}

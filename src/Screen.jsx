@@ -5,6 +5,8 @@ import PayCard from "./components/PayCard"
 import PaymentModal from "./components/PaymentModal"
 import { AiFillBank, AiOutlineBell, AiFillStar } from "react-icons/ai"
 
+
+
 export default function Screen({ token, user, onLogout }) {
   // ==========================================
   // 1. STATE DEFINITIONS
@@ -15,7 +17,7 @@ export default function Screen({ token, user, onLogout }) {
   const [editingIndex, setEditingIndex] = useState(-1) // index of payment method being edited, -1 for adding
   const [loading, setLoading] = useState(false)
 
-  const API_URL = "http://localhost:3000"
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
   // ==========================================
   // 2. LIFECYCLE / EFFECTS
@@ -305,14 +307,6 @@ export default function Screen({ token, user, onLogout }) {
       <div style={headerBarStyle}>
         <div style={leftTextStyle}>My Payment...</div>
         <div style={rightWidgetsStyle}>
-          <div style={starBadgeStyle}>
-            <span>60</span>
-            <AiFillStar style={{ color: "#faad14" }} />
-          </div>
-          <div style={balanceBadgeStyle}>$0.0000</div>
-          <div style={bellStyle}>
-            <AiOutlineBell />
-          </div>
           {/* Clicking on the user avatar triggers logout */}
           <div 
             style={{ 
@@ -343,7 +337,7 @@ export default function Screen({ token, user, onLogout }) {
         }}
       >
         {/* Add Payment Grid Options Section */}
-        <h3 style={{ fontWeight: 600, margin: "40px 0px", textAlign: "center", color: "#1e1b24" }}>
+        <h3 style={{ fontWeight: 600, margin: "10px 0px", textAlign: "center", color: "#1e1b24" }}>
           Add Payment Options
         </h3>
         <div style={gridStyle}>
@@ -364,25 +358,35 @@ export default function Screen({ token, user, onLogout }) {
           />
           <Option 
             img="src/assets/paytm.png" 
-            name="Paytm" 
+            name={
+              <span style={{ fontWeight: "700" }}>
+                <span style={{ color: "#002970" }}>Pay</span>
+                <span style={{ color: "#00b9f5" }}>tm</span>
+              </span>
+            } 
             onClick={() => handleOptionClick("Paytm")} 
           />
           <Option 
             img="src/assets/paypal.png" 
-            name="PayPal" 
+            name={
+              <span style={{ fontStyle: "italic", fontWeight: "700" }}>
+                <span style={{ color: "#3b148c" }}>Pay</span>
+                <span style={{ color: "#0079c1" }}>Pal</span>
+              </span>
+            } 
             onClick={() => handleOptionClick("PayPal")} 
           />
         </div>
 
         {/* Linked Card List Section */}
-        <h4 style={sectionTitleStyle}>Your Payment Methods</h4>
+        
         <div className="paycards">
           {loading && paymentMethods.length === 0 ? (
             <div className="loading-indicator">
               <div className="spinner"></div>
               <span>Loading Payments...</span>
             </div>
-          ) : paymentMethods.length > 0 ? (
+          ) : paymentMethods.length > 0 && (
             paymentMethods.map((method, index) => (
               <PayCard
                 key={method._id}
@@ -392,11 +396,7 @@ export default function Screen({ token, user, onLogout }) {
                 onDelete={() => handleDeleteClick(index)}
               />
             ))
-          ) : (
-            <div style={{ textAlign: "center", color: "#b4b2bd", padding: "20px", fontSize: "14px" }}>
-              No payment methods linked yet.
-            </div>
-          )}
+          ) }
         </div>
 
         {/* Disclaimer Section */}

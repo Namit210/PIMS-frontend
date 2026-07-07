@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineAlert } from 'react-icons/ai';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export default function Auth({ onAuthSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminSecret, setAdminSecret] = useState('');
   const [error, setError] = useState('');
@@ -60,43 +62,159 @@ export default function Auth({ onAuthSuccess }) {
     }
   };
 
-  return (
-    <div className="auth-wrapper">
-      <div className="auth-header">
-        <div className="auth-logo" style={{ background: "none", boxShadow: "none", width: "140px", height: "auto", borderRadius: "0" }}>
-          <img src="/taskPlanet.png" alt="TaskPlanet Logo" style={{ width: "100%", height: "auto", objectFit: "contain" }} />
-        </div>
-        <h2>{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
-        <p>{isLogin ? 'Sign in to manage your payments' : 'Create a new Payment Manager profile'}</p>
-      </div>
+  // Inline styling overrides matching login.png layout
+  const wrapperStyle = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "100vh",
+    backgroundColor: "#ffffff",
+    padding: "24px",
+    boxSizing: "border-box"
+  };
 
-      <div className="auth-card">
+  const cardStyle = {
+    width: "100%",
+    maxWidth: "400px",
+    backgroundColor: "#ffffff",
+    padding: "10px 0px"
+  };
+
+  const headingStyle = {
+    fontSize: "30px",
+    fontWeight: "800",
+    color: "#4F00FF",
+    textAlign: "center",
+    marginBottom: "30px",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+    fontFamily: "Outfit, Inter, sans-serif"
+  };
+
+  const formGroupStyle = {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "20px",
+    textAlign: "left"
+  };
+
+  const labelStyle = {
+    fontSize: "14px",
+    fontWeight: "700",
+    color: "#2c2755",
+    marginBottom: "8px",
+    fontFamily: "Outfit, Inter, sans-serif"
+  };
+
+  const inputWrapperStyle = {
+    position: "relative",
+    width: "100%"
+  };
+
+  const inputStyle = {
+    width: "100%",
+    padding: "12px 14px",
+    fontSize: "14px",
+    border: "1px solid #cbd5e1",
+    borderRadius: "6px",
+    boxSizing: "border-box",
+    backgroundColor: "#ffffff",
+    outline: "none",
+    color: "#1e1b24",
+    transition: "border-color 0.2s"
+  };
+
+  const eyeIconStyle = {
+    position: "absolute",
+    right: "14px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    fontSize: "20px",
+    color: "#1e1b24",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center"
+  };
+
+  const forgotStyle = {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: "-8px",
+    marginBottom: "24px"
+  };
+
+  const forgotLinkStyle = {
+    fontSize: "13px",
+    fontWeight: "700",
+    color: "#FF4B00",
+    cursor: "pointer",
+    textDecoration: "none",
+    fontFamily: "Outfit, Inter, sans-serif"
+  };
+
+  const submitBtnStyle = {
+    width: "100%",
+    backgroundColor: "#4F00FF",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "6px",
+    padding: "14px",
+    fontSize: "16px",
+    fontWeight: "700",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+    marginTop: "10px",
+    fontFamily: "Outfit, Inter, sans-serif"
+  };
+
+  const footerStyle = {
+    textAlign: "center",
+    marginTop: "24px",
+    fontSize: "14px",
+    color: "#000000",
+    fontWeight: "500",
+    fontFamily: "Outfit, Inter, sans-serif"
+  };
+
+  const footerLinkStyle = {
+    color: "#4F00FF",
+    fontWeight: "700",
+    cursor: "pointer",
+    marginLeft: "6px",
+    textDecoration: "none"
+  };
+
+  return (
+    <div style={wrapperStyle}>
+      <div style={cardStyle}>
+        
+        {/* Header Heading matching login.png */}
+        <h2 style={headingStyle}>{isLogin ? 'Login' : 'Register'}</h2>
+
+        {/* Error notification banner */}
         {error && (
-          <div className="error-banner">
-            <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
+          <div className="error-banner" style={{ marginBottom: "20px" }}>
+            <AiOutlineAlert style={{ fontSize: "16px", flexShrink: 0 }} />
             <span>{error}</span>
           </div>
         )}
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          
+          {/* Full Name input for Signup only */}
           {!isLogin && (
-            <div className="form-group">
-              <label htmlFor="username">Full Name</label>
-              <div className="input-wrapper">
-                <span className="input-icon">
-                  <svg style={{ width: '18px', height: '18px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
-                </span>
+            <div style={formGroupStyle}>
+              <label htmlFor="username" style={labelStyle}>Full Name</label>
+              <div style={inputWrapperStyle}>
                 <input
                   id="username"
                   type="text"
                   name="username"
-                  placeholder="John Doe"
+                  placeholder="Enter Your Full Name"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  style={inputStyle}
                   autoComplete="name"
                   required
                 />
@@ -104,50 +222,53 @@ export default function Auth({ onAuthSuccess }) {
             </div>
           )}
 
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <svg style={{ width: '18px', height: '18px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
-              </span>
+          {/* Email Address input */}
+          <div style={formGroupStyle}>
+            <label htmlFor="email" style={labelStyle}>Username Or Email</label>
+            <div style={inputWrapperStyle}>
               <input
                 id="email"
                 type="email"
                 name="email"
-                placeholder="name@example.com"
+                placeholder="Enter Your Username Or Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                style={inputStyle}
                 autoComplete="email"
                 required
               />
             </div>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <div className="input-wrapper">
-              <span className="input-icon">
-                <svg style={{ width: '18px', height: '18px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
-              </span>
+          {/* Password input with Eye toggle visibility */}
+          <div style={formGroupStyle}>
+            <label htmlFor="password" style={labelStyle}>Password</label>
+            <div style={inputWrapperStyle}>
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
-                placeholder="••••••••"
+                placeholder="Enter Your Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                style={{ ...inputStyle, paddingRight: "44px" }}
                 autoComplete={isLogin ? "current-password" : "new-password"}
                 required
               />
+              <span 
+                style={eyeIconStyle} 
+                onClick={() => setShowPassword(!showPassword)}
+                title={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+              </span>
             </div>
           </div>
 
+
+          {/* Admin checkbox toggle for registration */}
           {!isLogin && (
-            <div className="form-group" style={{ flexDirection: "row", alignItems: "center", gap: "8px", margin: "4px 0" }}>
+            <div style={{ ...formGroupStyle, flexDirection: "row", alignItems: "center", gap: "8px", marginTop: "-4px" }}>
               <input
                 id="isAdmin"
                 type="checkbox"
@@ -158,21 +279,17 @@ export default function Auth({ onAuthSuccess }) {
                 }}
                 style={{ width: "18px", height: "18px", cursor: "pointer" }}
               />
-              <label htmlFor="isAdmin" style={{ cursor: "pointer", fontSize: "14px", fontWeight: "600", color: "var(--text-secondary)" }}>
+              <label htmlFor="isAdmin" style={{ cursor: "pointer", fontSize: "14px", fontWeight: "600", color: "#64748b", margin: 0 }}>
                 Register as Admin
               </label>
             </div>
           )}
 
+          {/* Admin Secret Key input */}
           {!isLogin && isAdmin && (
-            <div className="form-group" style={{ marginTop: "4px" }}>
-              <label htmlFor="adminSecret">Admin Secret Key</label>
-              <div className="input-wrapper">
-                <span className="input-icon">
-                  <svg style={{ width: '18px', height: '18px' }} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                  </svg>
-                </span>
+            <div style={formGroupStyle}>
+              <label htmlFor="adminSecret" style={labelStyle}>Admin Secret Key</label>
+              <div style={inputWrapperStyle}>
                 <input
                   id="adminSecret"
                   type="password"
@@ -180,26 +297,36 @@ export default function Auth({ onAuthSuccess }) {
                   placeholder="Enter Admin Secret Key"
                   value={adminSecret}
                   onChange={(e) => setAdminSecret(e.target.value)}
+                  style={inputStyle}
                   required
                 />
               </div>
             </div>
           )}
 
-          <button className="auth-btn" type="submit" disabled={loading}>
-            {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Sign Up'}
+          {/* Submit Action Button */}
+          <button 
+            style={submitBtnStyle} 
+            type="submit" 
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : isLogin ? 'Login' : 'Register'}
           </button>
         </form>
 
-        <div className="auth-toggle">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}
-          <span onClick={() => {
-            setIsLogin(!isLogin);
-            setIsAdmin(false);
-            setAdminSecret('');
-            setError('');
-          }}>
-            {isLogin ? 'Sign Up' : 'Sign In'}
+        {/* Footer Toggle links matching login.png */}
+        <div style={footerStyle}>
+          {isLogin ? "Need An Account?" : "Already have an account?"}
+          <span 
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setIsAdmin(false);
+              setAdminSecret('');
+              setError('');
+            }}
+            style={footerLinkStyle}
+          >
+            {isLogin ? 'Register' : 'Login'}
           </span>
         </div>
       </div>
